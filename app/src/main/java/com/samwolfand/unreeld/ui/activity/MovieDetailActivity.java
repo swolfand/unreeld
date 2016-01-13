@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -60,8 +61,13 @@ public class MovieDetailActivity extends BaseActivity {
                     .commit();
         }
 
-        setBackdrop(movie);
-        initCollapsingTitleBehavior(movie.getTitle());
+        if (getResources().getBoolean(R.bool.two_pane)) {
+            mAppbar.setVisibility(View.GONE);
+        } else {
+            setBackdrop(movie);
+            initCollapsingTitleBehavior(movie.getTitle());
+        }
+
 
     }
 

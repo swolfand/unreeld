@@ -39,6 +39,7 @@ public class MoviesActivity extends BaseActivity implements AdapterView.OnItemSe
     public static final String MOVIES_FRAGMENT_TAG = "fragment_movies_tag";
     public static final String KEY_MODE = "key_mode";
     private static final String MODE_FAVORITES = "favorites";
+    private static final String MOVIE_DETAILS_FRAGMENT_TAG = "fragment_detail_tag";
 
     private MoviesFragment mMoviesFragment;
     SortBySpinnerAdapter mSpinnerAdapter = new SortBySpinnerAdapter();
@@ -54,6 +55,8 @@ public class MoviesActivity extends BaseActivity implements AdapterView.OnItemSe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
         ButterKnife.bind(this);
+
+        mTwoPane = findViewById(R.id.movie_details_container) != null;
 
         mOrchestrator = new MovieOrchestrator(this, mMoviesRepository);
 
@@ -180,21 +183,24 @@ public class MoviesActivity extends BaseActivity implements AdapterView.OnItemSe
 
     }
 
-    //TODO
+
     @Subscribe
     @SuppressWarnings("unused")
     public void onFavoriteClicked(FavoriteClickedEvent event) {
         boolean favorited = !event.getMovie().isFavorited();
         mOrchestrator.setFavorite(event.getMovie(), favorited);
-        String message = favorited ? "Added " + event.getMovie().getTitle() + " to favorites." :
-                "Removed " + event.getMovie().getTitle() +  " from favorites.";
+        String message = favorited ? String.format("Added %s to favorites.", event.getMovie().getTitle()) :
+                String.format("Removed %s from favorites.", event.getMovie().getTitle());
         Toast.makeText(MoviesActivity.this, message, Toast.LENGTH_SHORT).show();
 
     }
 
-    //TODO
-    private void setTwoPane(MovieDetailFragment fragment) {
 
+    private void setTwoPane(MovieDetailFragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.movie_details_container, fragment, MOVIE_DETAILS_FRAGMENT_TAG)
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+                .commit();
     }
 
 }
