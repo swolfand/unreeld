@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffe53935</color>
+    <color name="colorPrimaryDark">#ffc62828</color>
+    <color name="colorAccent">#ff2962ff</color>
+    <color name="colorPrimaryLight">#ffe57373</color>
+
+    <color name="background_gray">#e4e4e4</color>
+
+    <color name="movie_poster_placeholder">#ffd32f2f</color>
+    <color name="movie_cover_placeholder">#ffd32f2f</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="list_dropdown_divider_color">#92a3a3a3</color>
+    <color name="body_masked">#de000000</color>
+    <color name="body_text_2">#8a000000</color>
+    <color name="list_dropdown_foreground_normal">#ff333333</color>
+
+</resources>

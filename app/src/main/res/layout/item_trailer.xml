@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="?listPreferredItemHeightSmall"
+             android:clickable="true">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/keyline_1"
+        android:contentDescription="@string/play_trailer_desc"
+        android:src="@drawable/ic_play_circle"
+        android:tint="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/video_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/keyline_1"
+        android:layout_marginStart="@dimen/trailer_spacing"
+        android:ellipsize="end"
+        android:maxLines="2"
+        tools:text="@string/placeholder_trailer"/>
+
+</FrameLayout>
