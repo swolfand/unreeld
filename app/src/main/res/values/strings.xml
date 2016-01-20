@@ -22,4 +22,5 @@
     <string name="share_template">Check out \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="url">%2$s</xliff:g></string>
     <string name="share_trailer">Share trailer</string>
     <string name="this_content_is_not_available_offline">This content is not available offline</string>
+    <string name="backdrop">backdrop</string>
 </resources>
