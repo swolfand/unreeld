@@ -16,6 +16,6 @@
     <dimen name="keyline_1">16dp</dimen>
     <dimen name="keyline_2">72dp</dimen>
     <dimen name="trailer_spacing">60dp</dimen>
-    <item name="movies_aspect" type="dimen" format="float">.675</item>
+    <item name="movies_aspect" format="float" type="dimen">.675</item>
 
 </resources>

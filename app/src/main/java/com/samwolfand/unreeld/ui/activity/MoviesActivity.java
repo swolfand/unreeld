@@ -79,7 +79,6 @@ public class MoviesActivity extends BaseActivity implements AdapterView.OnItemSe
     }
 
 
-
     private void loadFragment(Sort sort) {
         MoviesFragment fragment = MoviesFragment.newInstance(sort);
         mMoviesFragment = fragment;
@@ -124,7 +123,6 @@ public class MoviesActivity extends BaseActivity implements AdapterView.OnItemSe
 
 
         spinner.setSelection(position);
-
 
 
     }
@@ -202,6 +200,8 @@ public class MoviesActivity extends BaseActivity implements AdapterView.OnItemSe
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
                 .commit();
     }
+
+   
 
 }
 
