@@ -12,8 +12,13 @@ import dagger.Module;
 @Module
 public class MovieDetailActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MOVIE = "movie_extra";
-    public static final String TRANSITION_SHARED_ELEMENT = "transition";
+    public static final String EXTRA_MOVIE = "extra_movie";
+    public static final String TRANSITION_SHARED_ELEMENT = "title";
+
+//    public static final String KEY_MOVIE = "com.samwolfand.unreeld.parcels.KEY_MOVIE";
+
+    private static final String FRAGMENT_TAG = "fragment_movie";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
