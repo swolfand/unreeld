@@ -1,10 +1,12 @@
 package com.samwolfand.unreeld.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.samwolfand.unreeld.R;
 import com.samwolfand.unreeld.UnreeldApplication;
+import com.samwolfand.unreeld.network.entities.Movie;
 import com.samwolfand.unreeld.ui.fragment.MovieDetailFragment;
 
 import dagger.Module;
@@ -26,6 +28,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         ((UnreeldApplication) getApplication()).getAppComponent().inject(this);
 
+        Movie movie = getIntent().getParcelableExtra(EXTRA_MOVIE);
+
+        ViewCompat.setTransitionName();
         if (savedInstanceState == null) {
             MovieDetailFragment detailFragment = MovieDetailFragment.newInstance(movie);
             getSupportFragmentManager().beginTransaction()
