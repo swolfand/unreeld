@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samwolfand.unreeld.R;
@@ -20,6 +22,7 @@ import com.samwolfand.unreeld.network.api.Sort;
 import com.samwolfand.unreeld.network.entities.Movie;
 import com.samwolfand.unreeld.network.repository.MoviesRepository;
 import com.samwolfand.unreeld.ui.adapter.MoviesAdapter;
+import com.samwolfand.unreeld.ui.widget.AspectLockedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,8 @@ public class MoviesFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Bind(R.id.error_layout) LinearLayout mErrorLayout;
 
     @Inject MoviesRepository mMoviesRepository;
+
+
 
     private GridLayoutManager mGridLayoutManager;
     private MoviesAdapter mMoviesAdapter;

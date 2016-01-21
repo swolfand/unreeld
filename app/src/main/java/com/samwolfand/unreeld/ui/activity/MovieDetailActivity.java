@@ -31,11 +31,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 //    public static final String KEY_MOVIE = "com.samwolfand.unreeld.parcels.KEY_MOVIE";
 
     private static final String FRAGMENT_TAG = "fragment_movie";
-    @Bind(R.id.backdrop) ImageView mBackdrop;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.collapsing_toolbar) CollapsingToolbarLayout mCollapsingToolbar;
-    @Bind(R.id.appbar) AppBarLayout mAppbar;
-    @Bind(R.id.movie_details_container) FrameLayout mMovieDetailsContainer;
+
     @Bind(R.id.container_inner_item) CoordinatorLayout mContainerInnerItem;
 
 
@@ -56,59 +52,9 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .commit();
         }
 
-        if (getResources().getBoolean(R.bool.two_pane)) {
-            mAppbar.setVisibility(View.GONE);
-        } else {
-            setBackdrop(movie);
-            initCollapsingTitleBehavior(movie.getTitle());
-        }
 
 
-    }
 
-    public void setBackdrop(Movie movie) {
-        Glide.with(this).load("http://image.tmdb.org/t/p/w342/" + movie.getBackdropPath())
-                .placeholder(R.color.movie_cover_placeholder)
-                .centerCrop()
-                .crossFade()
-                .into(mBackdrop);
-    }
-
-    private void initCollapsingTitleBehavior(String title) {
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
-        }
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
-        }
-        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            int scrollRange = -1;
-            boolean isShowing = false;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    mCollapsingToolbar.setTitle(title);
-                    isShowing = true;
-                } else if (isShowing) {
-                    mCollapsingToolbar.setTitle("");
-                    isShowing = false;
-                }
-            }
-        });
-    }
-
-    public ImageView getBackdrop() {
-        return mBackdrop;
     }
 
 }
