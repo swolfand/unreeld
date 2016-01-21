@@ -1,6 +1,7 @@
 package com.samwolfand.unreeld.ui.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,11 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
 import com.samwolfand.unreeld.R;
 import com.samwolfand.unreeld.network.entities.Movie;
 import com.samwolfand.unreeld.network.entities.Review;
+import com.samwolfand.unreeld.network.entities.Video;
 import com.samwolfand.unreeld.network.repository.MoviesRepository;
+import com.samwolfand.unreeld.ui.activity.MovieDetailActivity;
+import com.samwolfand.unreeld.ui.orchestration.MovieOrchestrator;
 import com.samwolfand.unreeld.ui.widget.AspectLockedImageView;
 import com.samwolfand.unreeld.util.DateUtils;
 
@@ -33,6 +38,8 @@ import butterknife.ButterKnife;
 import dagger.Module;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
+
+import static butterknife.ButterKnife.findById;
 
 @Module
 public class MovieDetailFragment extends Fragment {
@@ -50,13 +57,16 @@ public class MovieDetailFragment extends Fragment {
     @Bind(R.id.movie_average_rating) TextView mMovieAverageRating;
     @Bind(R.id.movie_overview) TextView mMovieOverview;
     @Bind(R.id.movie_reviews_header) TextView mMovieReviewsHeader;
-    @Bind(R.id.movie_reviews_container) LinearLayout mMovieReviewsContainer;
+    @Bind(R.id.movie_reviews_container) LinearLayout mReviewsGroup;
     @Bind(R.id.movie_videos_header) TextView mMovieVideosHeader;
-    @Bind(R.id.movie_videos_container) LinearLayout mMovieVideosContainer;
+    @Bind(R.id.movie_videos_container) LinearLayout mVideosGroup;
 
     @Inject MoviesRepository mMoviesRepository;
 
     private Movie mMovie;
+    private MovieOrchestrator mOrchestrator;
+    private boolean mReviewsExist;
+    private Video mTrailer;
 
     public MovieDetailFragment() {
         // Required empty public constructor
@@ -111,6 +121,9 @@ public class MovieDetailFragment extends Fragment {
                 .centerCrop()
                 .crossFade()
                 .into(mMoviePoster);
+
+        addReviewsToView(movie);
+        
     }
 
 
@@ -118,10 +131,6 @@ public class MovieDetailFragment extends Fragment {
         mMoviesRepository.reviews(movie.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::bindReviews, throwable -> Timber.e(throwable, "Failed to load reviews"));
-    }
-
-    private void bindReviews(List<Review> reviews) {
-
     }
 
 
@@ -172,5 +181,65 @@ public class MovieDetailFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void bindTrailers(List<Video> videos) {
+
+        final LayoutInflater inflater = LayoutInflater.from(getActivity());
+
+        Stream.of(videos)
+                .forEach(trailer -> {
+                    if (trailer.getType().equals(Video.TYPE_TRAILER)) {
+                        Timber.d("Trailer found");
+                        mTrailer = trailer;
+                        mBackdrop.setTag(trailer);
+                        mBackdrop.setOnClickListener(view -> mOrchestrator.playVideo((Video) view.getTag()));
+                        getActivity().findViewById(R.id.movie_poster_play).setVisibility(View.VISIBLE);
+                    }
+                });
+
+        Stream.of(videos)
+                .forEach(video -> {
+                    final View videoView = inflater.inflate(R.layout.item_trailer, mVideosGroup, false);
+                    final TextView videoNameView = findById(videoView, R.id.video_name);
+
+                    videoNameView.setText(video.getSite() + ": " + video.getName());
+                    videoView.setTag(video);
+                    videoView.setOnClickListener(view -> mOrchestrator.playVideo((Video) view.getTag()));
+
+                    mVideosGroup.addView(videoView);
+                });
+
+        mVideosGroup.setVisibility(View.VISIBLE);
+    }
+
+
+    //Do review bound operations
+
+    private void addReviewsToView(Movie movie) {
+        mMoviesRepository.reviews(movie.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::bindReviews);
+    }
+
+    public void bindReviews(@NonNull List<Review> reviews) {
+
+        final LayoutInflater inflater = LayoutInflater.from(getActivity().getApplicationContext());
+
+        mReviewsExist = false;
+        Stream.of(reviews)
+                .filter(review -> !review.getAuthor().isEmpty())
+                .forEach(review -> {
+                    final View reviewView = inflater.inflate(R.layout.item_review_detail, mReviewsGroup, false);
+                    final TextView reviewAuthor = findById(reviewView, R.id.review_author);
+                    final TextView reviewContent = findById(reviewView, R.id.review_content);
+
+                    reviewAuthor.setText(review.getAuthor());
+                    reviewContent.setText(review.getContent());
+                    mReviewsGroup.addView(reviewView);
+                    mReviewsExist = true;
+                });
+
+        mReviewsGroup.setVisibility(mReviewsExist ? View.VISIBLE : View.GONE);
     }
 }
