@@ -13,17 +13,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.samwolfand.unreeld.R;
 import com.samwolfand.unreeld.network.entities.Movie;
+import com.samwolfand.unreeld.network.entities.Review;
+import com.samwolfand.unreeld.network.repository.MoviesRepository;
 import com.samwolfand.unreeld.ui.widget.AspectLockedImageView;
 import com.samwolfand.unreeld.util.DateUtils;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import dagger.Module;
+import rx.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 @Module
 public class MovieDetailFragment extends Fragment {
@@ -39,6 +48,13 @@ public class MovieDetailFragment extends Fragment {
     @Bind(R.id.movie_title) TextView mMovieTitle;
     @Bind(R.id.movie_release_date) TextView mMovieReleaseDate;
     @Bind(R.id.movie_average_rating) TextView mMovieAverageRating;
+    @Bind(R.id.movie_overview) TextView mMovieOverview;
+    @Bind(R.id.movie_reviews_header) TextView mMovieReviewsHeader;
+    @Bind(R.id.movie_reviews_container) LinearLayout mMovieReviewsContainer;
+    @Bind(R.id.movie_videos_header) TextView mMovieVideosHeader;
+    @Bind(R.id.movie_videos_container) LinearLayout mMovieVideosContainer;
+
+    @Inject MoviesRepository mMoviesRepository;
 
     private Movie mMovie;
 
@@ -85,6 +101,7 @@ public class MovieDetailFragment extends Fragment {
         mMovieTitle.setText(movie.getTitle());
         mMovieAverageRating.setText(getString(R.string.movie_details_rating, movie.getVoteAverage()));
         mMovieReleaseDate.setText(DateUtils.getFormattedDate(movie.getReleaseDate()));
+        mMovieOverview.setText(movie.getOverview());
         mMovieFavoriteButton.setSelected(movie.isFavorited());
 
         setBackdrop(movie);
@@ -95,6 +112,19 @@ public class MovieDetailFragment extends Fragment {
                 .crossFade()
                 .into(mMoviePoster);
     }
+
+
+    private void loadReviews(Movie movie) {
+        mMoviesRepository.reviews(movie.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::bindReviews, throwable -> Timber.e(throwable, "Failed to load reviews"));
+    }
+
+    private void bindReviews(List<Review> reviews) {
+
+    }
+
+
 
     @Override
     public void onDestroyView() {
