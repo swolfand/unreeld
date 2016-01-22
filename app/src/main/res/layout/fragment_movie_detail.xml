@@ -82,4 +82,6 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
+    <include layout="@layout/include_error"/>
+
 </android.support.design.widget.CoordinatorLayout>

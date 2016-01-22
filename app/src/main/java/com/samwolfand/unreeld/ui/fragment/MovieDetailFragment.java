@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
@@ -39,6 +40,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.Module;
 import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -96,6 +98,7 @@ public class MovieDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -103,7 +106,7 @@ public class MovieDetailFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((UnreeldApplication) getActivity().getApplication()).getAppComponent().injectDetailFragment(this);
-
+        mOrchestrator = new MovieOrchestrator(getActivity(), mMoviesRepository);
         mMovie = getArguments().getParcelable(KEY_MOVIE);
         if (mMovie != null) {
             initCollapsingTitleBehavior(mMovie.getTitle());
@@ -268,5 +271,20 @@ public class MovieDetailFragment extends Fragment {
                 });
 
         mReviewsGroup.setVisibility(mReviewsExist ? View.VISIBLE : View.GONE);
+    }
+
+    @OnClick(R.id.movie_favorite_button)
+    @SuppressWarnings("unused")
+    public void setMovieFavorited() {
+        if(mMovie == null) return;
+
+        boolean favorited = !mMovie.isFavorited();
+        mMovieFavoriteButton.setSelected(favorited);
+        mOrchestrator.setFavorite(mMovie, favorited);
+        if (favorited) {
+            Toast.makeText(getContext(), "Saved to favorites.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Removed from favorites.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
