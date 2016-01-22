@@ -10,6 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
 import com.samwolfand.unreeld.R;
+import com.samwolfand.unreeld.UnreeldApplication;
 import com.samwolfand.unreeld.network.entities.Movie;
 import com.samwolfand.unreeld.network.entities.Review;
 import com.samwolfand.unreeld.network.entities.Video;
@@ -98,6 +102,7 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((UnreeldApplication) getActivity().getApplication()).getAppComponent().injectDetailFragment(this);
 
         mMovie = getArguments().getParcelable(KEY_MOVIE);
         if (mMovie != null) {
@@ -123,17 +128,30 @@ public class MovieDetailFragment extends Fragment {
                 .into(mMoviePoster);
 
         addReviewsToView(movie);
-        
+        addTrailersToView(movie);
+
     }
 
 
-    private void loadReviews(Movie movie) {
-        mMoviesRepository.reviews(movie.getId())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::bindReviews, throwable -> Timber.e(throwable, "Failed to load reviews"));
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.movie_detail_menu, menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
+            case R.id.menu_share:
+                mOrchestrator.shareTrailer(R.string.share_template, mTrailer);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
+    }
 
     @Override
     public void onDestroyView() {
@@ -182,6 +200,15 @@ public class MovieDetailFragment extends Fragment {
             }
         });
     }
+
+
+
+    private void addTrailersToView(Movie movie) {
+        mMoviesRepository.videos(movie.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::bindTrailers, throwable -> Timber.e(throwable, "failed to load reviews"));
+    }
+
 
     private void bindTrailers(List<Video> videos) {
 
