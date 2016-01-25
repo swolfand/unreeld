@@ -15,9 +15,9 @@ Unreel'd is a fully functional from scratch application that I built for the [An
 ## How to Work with the Source
 
 This app uses [The Movie Database](https://www.themoviedb.org/documentation/api) API to retrieve movies.
-You must provide your own API key in order to build the app. When you get it, just paste it to:
+You must provide your own API key in order to build the app. When you get it, you will need to put it in the file called "unreeld.properties" the full location is:
     ```
-    app/build.gradle
+    app/unreeld.properties
     ```
 
 ## Screens
@@ -33,13 +33,15 @@ You must provide your own API key in order to build the app. When you get it, ju
 ## Libraries
 
 * [ButterKnife](https://github.com/JakeWharton/butterknife)
-* [Dagger 2](https://github.com/square/dagger)
+* [Dagger 2](http://google.github.io/dagger/)
 * [Retrofit](https://github.com/square/retrofit)
 * [SQLBrite](https://github.com/square/sqlbrite)
 * [RxJava](https://github.com/ReactiveX/RxJava)
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 * [Glide](https://github.com/bumptech/glide)
 * [GlidePalette](https://github.com/florent37/GlidePalette)
-* [Android-ObservableScrollView](https://github.com/ksoichiro/Android-ObservableScrollView)
+* [Timber](https://github.com/JakeWharton/Timber)
 * [Gradle Retrolambda Plugin](https://github.com/evant/gradle-retrolambda)
+* [Otto](http://square.github.io/otto/)
+* [Robolectric](http://robolectric.org/)
 
