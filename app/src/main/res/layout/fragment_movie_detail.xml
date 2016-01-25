@@ -53,6 +53,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:layout_marginTop="-20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -79,6 +80,7 @@
             <include layout="@layout/partial_movie_reviews"/>
 
             <include layout="@layout/partial_movie_videos"/>
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

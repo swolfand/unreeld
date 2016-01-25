@@ -51,10 +51,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                     .replace(R.id.movie_details_container, detailFragment, FRAGMENT_TAG)
                     .commit();
         }
-
-
-
-
     }
 
 }

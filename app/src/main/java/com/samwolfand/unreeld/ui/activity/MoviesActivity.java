@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.samwolfand.unreeld.R;
@@ -195,13 +196,15 @@ public class MoviesActivity extends BaseActivity implements AdapterView.OnItemSe
 
 
     private void setTwoPane(MovieDetailFragment fragment) {
+        TextView chooseMovie = (TextView) findViewById(R.id.choose_movie);
+        chooseMovie.setVisibility(View.GONE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.movie_details_container, fragment, MOVIE_DETAILS_FRAGMENT_TAG)
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
                 .commit();
     }
 
-   
+
 
 }
 

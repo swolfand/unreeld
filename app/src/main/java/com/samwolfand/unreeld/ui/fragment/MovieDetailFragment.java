@@ -1,5 +1,6 @@
 package com.samwolfand.unreeld.ui.fragment;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,7 +30,6 @@ import com.samwolfand.unreeld.network.entities.Movie;
 import com.samwolfand.unreeld.network.entities.Review;
 import com.samwolfand.unreeld.network.entities.Video;
 import com.samwolfand.unreeld.network.repository.MoviesRepository;
-import com.samwolfand.unreeld.ui.activity.MovieDetailActivity;
 import com.samwolfand.unreeld.ui.orchestration.MovieOrchestrator;
 import com.samwolfand.unreeld.ui.widget.AspectLockedImageView;
 import com.samwolfand.unreeld.util.DateUtils;
@@ -73,6 +73,7 @@ public class MovieDetailFragment extends Fragment {
     private MovieOrchestrator mOrchestrator;
     private boolean mReviewsExist;
     private Video mTrailer;
+    private boolean mTwoPane;
 
     public MovieDetailFragment() {
         // Required empty public constructor
@@ -113,6 +114,8 @@ public class MovieDetailFragment extends Fragment {
             bindMovie(mMovie);
 
         }
+
+
     }
 
     private void bindMovie(Movie movie) {
@@ -171,13 +174,19 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void initCollapsingTitleBehavior(String title) {
+        mTwoPane = getResources().getBoolean(R.bool.two_pane);
         if (mToolbar != null) {
             ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         }
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if (mTwoPane) {
+                mToolbar.setVisibility(View.GONE);
+
+            } else {
+                actionBar.setHomeButtonEnabled(true);
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
@@ -194,6 +203,7 @@ public class MovieDetailFragment extends Fragment {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
+
                     mCollapsingToolbar.setTitle(title);
                     isShowing = true;
                 } else if (isShowing) {
@@ -203,7 +213,6 @@ public class MovieDetailFragment extends Fragment {
             }
         });
     }
-
 
 
     private void addTrailersToView(Movie movie) {
@@ -265,6 +274,7 @@ public class MovieDetailFragment extends Fragment {
                     final TextView reviewContent = findById(reviewView, R.id.review_content);
 
                     reviewAuthor.setText(review.getAuthor());
+                    reviewAuthor.setTypeface(Typeface.DEFAULT_BOLD);
                     reviewContent.setText(review.getContent());
                     mReviewsGroup.addView(reviewView);
                     mReviewsExist = true;
@@ -276,7 +286,7 @@ public class MovieDetailFragment extends Fragment {
     @OnClick(R.id.movie_favorite_button)
     @SuppressWarnings("unused")
     public void setMovieFavorited() {
-        if(mMovie == null) return;
+        if (mMovie == null) return;
 
         boolean favorited = !mMovie.isFavorited();
         mMovieFavoriteButton.setSelected(favorited);

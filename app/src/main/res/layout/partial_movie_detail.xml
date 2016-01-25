@@ -17,6 +17,7 @@
         tools:src="@drawable/placeholder_movie_item_image"/>
 
     <ImageButton
+        android:layout_marginTop="20dp"
         android:id="@+id/movie_favorite_button"
         style="@style/FavoriteButton"
         android:layout_width="wrap_content"
@@ -27,10 +28,10 @@
         android:tint="@color/colorPrimary"/>
 
     <LinearLayout
+        style="@style/MovieDetailTextBody"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/movie_poster"
-        android:layout_toStartOf="@id/movie_favorite_button"
         android:orientation="vertical"
         android:padding="16dp">
 

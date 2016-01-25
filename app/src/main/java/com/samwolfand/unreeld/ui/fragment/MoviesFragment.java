@@ -152,6 +152,8 @@ public class MoviesFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onRefresh() {
         if (mSwipeRefreshLayout.isRefreshing()) {
+            mMoviesAdapter.clear();
+            loadMovies();
             mSwipeRefreshLayout.setRefreshing(false);
         }
     }
