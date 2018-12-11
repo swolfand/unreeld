@@ -3,8 +3,6 @@
 
 ![icon](../master/media/ic_launcher.png)
 
-Unreel'd is a fully functional from scratch application that I built for the [Android Nanodegree](https://www.udacity.com/course/android-developer-nanodegree--nd801) program by Udacity. 
-
 
 ## Features
 * Discover the most popular, the most rated or the highest rated movies
